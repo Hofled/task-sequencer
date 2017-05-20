@@ -1,6 +1,6 @@
 {
   "name": "task-sequencer",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A library which allows to perform tasks in a sequenced order.",
   "main": "./lib/task-sequencer.js",
   "types": "./lib/task-sequencer.d.ts",
