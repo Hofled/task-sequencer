@@ -1,27 +1,28 @@
 {
-  "name": "promise-queue",
+  "name": "task-sequencer",
   "version": "0.0.1",
-  "description": "A library which allows creation of promise-queues and task them in series.",
-  "main": "./lib/promise-queue.js",
-  "types": "./lib/promise-queue.d.ts",
+  "description": "A library which allows to perform tasks in a sequenced order.",
+  "main": "./lib/task-sequencer.js",
+  "types": "./lib/task-sequencer.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Hofled/promise-queue.git"
+    "url": "git+https://github.com/Hofled/task-sequencer.git"
   },
   "keywords": [
+    "tasks",
     "promise",
-    "queue",
+    "sequence",
     "series"
   ],
   "author": "Hofled",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Hofled/promise-queue/issues"
+    "url": "https://github.com/Hofled/task-sequencer/issues"
   },
-  "homepage": "https://github.com/Hofled/promise-queue#readme",
+  "homepage": "https://github.com/Hofled/task-sequencer#readme",
   "devDependencies": {
     "typescript": "^2.3.2"
   },

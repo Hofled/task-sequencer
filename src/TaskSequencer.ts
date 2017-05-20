@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { EventEmitter } from 'events';
 
-export class PromiseQueue {
+export class TaskSequencer {
     /**
      * @param {Function} fn the function to process in the queue
      * @param {any[]} args the arguments to be passed into the function in the queue
@@ -13,7 +13,7 @@ export class PromiseQueue {
     private isBusy: boolean;
 
     /** Exposing the length of the underlying queue */
-    public get queueLength(): number {
+    public get sequenceLength(): number {
         return this.internalQueue.length;
     };
 
