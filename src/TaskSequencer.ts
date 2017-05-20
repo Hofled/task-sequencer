@@ -28,8 +28,6 @@ export class TaskSequencer {
     private process(fn: (...fn_args) => Promise<any>, emitter?: EventEmitter, args?: any[]): Observable<any> {
         emitter = emitter || new EventEmitter();
 
-        console.log('entered with args: ' + args);
-
         if (this.isBusy) {
             this.unshiftIntoQueue(fn, emitter, args);
             return Observable.fromEvent(emitter, 'done');
