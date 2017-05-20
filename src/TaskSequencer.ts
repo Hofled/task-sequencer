@@ -43,7 +43,7 @@ export class TaskSequencer {
 
         let observable = Observable.fromEvent(emitter, 'done');
 
-        fn.apply(this, args).then(result => {
+        fn.apply(invokerObj, args).then(result => {
             emitter.emit('done', result);
             this.isBusy = false;
             // A task finished, now progressing queue to process the next task
