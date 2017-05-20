@@ -1,0 +1,27 @@
+{
+  "name": "promise-queue",
+  "version": "0.0.1",
+  "description": "A library which allows creation of promise-queues and task them in series.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hofled/promise-queue.git"
+  },
+  "keywords": [
+    "promise",
+    "queue",
+    "series"
+  ],
+  "author": "Hofled",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Hofled/promise-queue/issues"
+  },
+  "homepage": "https://github.com/Hofled/promise-queue#readme",
+  "devDependencies": {
+    "typescript": "^2.3.2"
+  }
+}
