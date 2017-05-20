@@ -22,6 +22,10 @@
   },
   "homepage": "https://github.com/Hofled/promise-queue#readme",
   "devDependencies": {
+    "@types/node": "^7.0.21",
     "typescript": "^2.3.2"
+  },
+  "dependencies": {
+    "rxjs": "^5.4.0"
   }
 }
