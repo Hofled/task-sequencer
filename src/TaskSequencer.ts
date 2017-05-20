@@ -7,7 +7,7 @@ export class TaskSequencer {
      * @param {any[]} args the arguments to be passed into the function in the queue
      * @param {EventEmitter} emitter the event emitter for the passed function
      */
-    private internalQueue: { fn: (fn_args) => Promise<any>, args?: any[], emitter: EventEmitter }[]
+    private internalQueue: { fn: (...fn_args) => Promise<any>, args?: any[], emitter: EventEmitter }[]
 
     /** A boolean indicating wether the queue is currently handling a task */
     private isBusy: boolean;
@@ -21,11 +21,11 @@ export class TaskSequencer {
         this.internalQueue = [];
     }
 
-    public task(fn: (fn_args) => Promise<any>, args?: any[]): Observable<any> {
+    public task(fn: (...fn_args) => Promise<any>, args?: any[]): Observable<any> {
         return this.process(fn, null, args);
     }
 
-    private process(fn: (fn_args) => Promise<any>, emitter?: EventEmitter, args?: any[]): Observable<any> {
+    private process(fn: (...fn_args) => Promise<any>, emitter?: EventEmitter, args?: any[]): Observable<any> {
         emitter = emitter || new EventEmitter();
 
         console.log('entered with args: ' + args);
@@ -60,7 +60,7 @@ export class TaskSequencer {
         }
     }
 
-    private unshiftIntoQueue(fn: (fn_args) => Promise<any>, emitter: EventEmitter, args?: any[]): void {
+    private unshiftIntoQueue(fn: (...fn_args) => Promise<any>, emitter: EventEmitter, args?: any[]): void {
         this.internalQueue.unshift({ fn: fn, args: args, emitter: emitter });
     }
 }
