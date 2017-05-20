@@ -1,0 +1,5 @@
+# VS code related
+.vscode/*
+
+# Git related
+node_modules/*
