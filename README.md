@@ -1,2 +1,2 @@
-# promise-queue
-A library which allows creating promise-queue and task them in series.
+# task-sequencer
+A library which allows to perform tasks in a sequenced order.
