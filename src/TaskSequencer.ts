@@ -7,7 +7,7 @@ export class TaskSequencer {
      * @param {any[]} args the arguments to be passed into the function in the queue
      * @param {EventEmitter} emitter the event emitter for the passed function
      */
-    private internalQueue: { fn: (...fn_args) => Promise<any>, args?: any[], emitter: EventEmitter }[]
+    private internalQueue: { invokerObj: any, fn: (...fn_args) => Promise<any>, args?: any[], emitter: EventEmitter }[]
 
     /** A boolean indicating wether the queue is currently handling a task */
     private isBusy: boolean;
@@ -21,15 +21,21 @@ export class TaskSequencer {
         this.internalQueue = [];
     }
 
-    public task(fn: (...fn_args) => Promise<any>, args?: any[]): Observable<any> {
-        return this.process(fn, null, args);
+    /**
+     * Tasks a function into the task-queue
+     * @param invokerObj A reference to the invoking object
+     * @param fn The function to be invoked
+     * @param args The arguments passed into the function
+     */
+    public task(invokerObj: any, fn: (...fn_args) => Promise<any>, args?: any[]): Observable<any> {
+        return this.process(invokerObj, fn, null, args);
     }
 
-    private process(fn: (...fn_args) => Promise<any>, emitter?: EventEmitter, args?: any[]): Observable<any> {
+    private process(invokerObj: any, fn: (...fn_args) => Promise<any>, emitter?: EventEmitter, args?: any[]): Observable<any> {
         emitter = emitter || new EventEmitter();
 
         if (this.isBusy) {
-            this.unshiftIntoQueue(fn, emitter, args);
+            this.unshiftIntoQueue(invokerObj, fn, emitter, args);
             return Observable.fromEvent(emitter, 'done');
         }
 
@@ -54,11 +60,11 @@ export class TaskSequencer {
             this.isBusy = false;
         }
         if (task) {
-            this.process(task.fn, task.emitter, task.args);
+            this.process(task.invokerObj, task.fn, task.emitter, task.args);
         }
     }
 
-    private unshiftIntoQueue(fn: (...fn_args) => Promise<any>, emitter: EventEmitter, args?: any[]): void {
-        this.internalQueue.unshift({ fn: fn, args: args, emitter: emitter });
+    private unshiftIntoQueue(invokerObj: any, fn: (...fn_args) => Promise<any>, emitter: EventEmitter, args?: any[]): void {
+        this.internalQueue.unshift({ invokerObj: invokerObj, fn: fn, args: args, emitter: emitter });
     }
 }
