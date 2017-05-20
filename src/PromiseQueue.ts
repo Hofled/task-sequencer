@@ -2,10 +2,12 @@ import { Observable } from 'rxjs';
 import { EventEmitter } from 'events';
 
 export class PromiseQueue {
-    /** The internal array of functions which implement a promise */
-    private internalQueue: { fn: (...args) => Promise<any>, args: any[] }[]
-
-    private internalEmitter: EventEmitter;
+    /**
+     * @param {Function} fn the function to process in the queue
+     * @param {any[]} args the arguments to be passed into the function in the queue
+     * @param {EventEmitter} emitter the event emitter for the passed function
+     */
+    private internalQueue: { fn: (fn_args) => Promise<any>, args?: any[], emitter: EventEmitter }[]
 
     /** A boolean indicating wether the queue is currently handling a task */
     private isBusy: boolean;
@@ -15,34 +17,50 @@ export class PromiseQueue {
         return this.internalQueue.length;
     };
 
-    /**
-     * Ctor
-     */
     constructor() {
-        this.internalEmitter = new EventEmitter();
+        this.internalQueue = [];
     }
 
-    public execute(fn: (...args) => Promise<any>, ...args): Observable<any> {
+    public task(fn: (fn_args) => Promise<any>, args?: any[]): Observable<any> {
+        return this.process(fn, null, args);
+    }
+
+    private process(fn: (fn_args) => Promise<any>, emitter?: EventEmitter, args?: any[]): Observable<any> {
+        emitter = emitter || new EventEmitter();
+
+        console.log('entered with args: ' + args);
+
         if (this.isBusy) {
-            this.pushIntoQueue(fn, args);
-            return Observable.fromEvent(this.internalEmitter, 'done');
+            this.unshiftIntoQueue(fn, emitter, args);
+            return Observable.fromEvent(emitter, 'done');
         }
 
         this.isBusy = true;
 
+        let observable = Observable.fromEvent(emitter, 'done');
+
         fn.apply(this, args).then(result => {
+            emitter.emit('done', result);
             this.isBusy = false;
-            this.internalEmitter.emit('done', result);
+            // A task finished, now progressing queue to process the next task
+            this.progressQueue();
         });
 
-        return Observable.fromEvent(this.internalEmitter, 'done');
+        return observable;
     }
 
     private progressQueue(): void {
-
+        let task = this.internalQueue.pop();
+        // Checking if queue is still busy after pop
+        if (this.internalQueue.length == 0) {
+            this.isBusy = false;
+        }
+        if (task) {
+            this.process(task.fn, task.emitter, task.args);
+        }
     }
 
-    private pushIntoQueue(fn: (...args) => Promise<any>, ...args): void {
-        this.internalQueue.push({ fn: fn, args: args });
+    private unshiftIntoQueue(fn: (fn_args) => Promise<any>, emitter: EventEmitter, args?: any[]): void {
+        this.internalQueue.unshift({ fn: fn, args: args, emitter: emitter });
     }
 }
