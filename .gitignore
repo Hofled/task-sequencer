@@ -1,0 +1,8 @@
+# Compiled code
+lib/*
+
+# Log files
+*.log
+
+# Git related
+node_modules/*

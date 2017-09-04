@@ -1,0 +1,33 @@
+{
+  "name": "task-sequencer",
+  "version": "0.0.6",
+  "description": "A library which allows to perform tasks in a sequenced order.",
+  "main": "./lib/task-sequencer.js",
+  "types": "./lib/task-sequencer.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hofled/task-sequencer.git"
+  },
+  "keywords": [
+    "tasks",
+    "promise",
+    "sequence",
+    "series"
+  ],
+  "author": "Hofled",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Hofled/task-sequencer/issues"
+  },
+  "homepage": "https://github.com/Hofled/task-sequencer#readme",
+  "devDependencies": {
+    "typescript": "^2.3.2"
+  },
+  "dependencies": {
+    "@types/node": "^7.0.21",
+    "rxjs": "^5.4.0"
+  }
+}
